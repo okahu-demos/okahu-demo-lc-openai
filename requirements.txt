@@ -1,0 +1,9 @@
+pysqlite3-binary
+chromadb
+huggingface-hub==0.22.2
+haystack-ai
+chroma-haystack
+transformers<4.41.0
+sentence-transformers
+okahu-observability
+credential_utilties/
