@@ -1,9 +1,13 @@
 pysqlite3-binary
 chromadb
 huggingface-hub==0.22.2
-haystack-ai
-chroma-haystack
+llama_index
+llama-index-vector-stores-chroma
 transformers<4.41.0
+llama-index-embeddings-huggingface
+llama-index-llms-azure-openai
+llama-index-embeddings-azure-openai
+huggingface-hub<0.23.0
 sentence-transformers
 okahu-observability
 credential_utilties/

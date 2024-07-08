@@ -1,2 +1,2 @@
 @echo off
-python3 haystack_openai_rag/haystack_llm_demo.py config/config.ini
+python3 azure_openai_rag/azure_openai_demo_with_okahu.py config/config.ini

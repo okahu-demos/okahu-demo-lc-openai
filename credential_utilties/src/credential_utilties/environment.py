@@ -1,7 +1,7 @@
 import os
 import configparser
 
-import credential_utilties.openai_creds
+import credential_utilties.azure_openai_creds
 import credential_utilties.self_hosted_creds
 import credential_utilties.okahu_creds
 
@@ -23,10 +23,14 @@ def setTritonEnvironmentVariablesFromConfig(configFilePath):
         [credential_utilties.self_hosted_creds.env_dict, 
          credential_utilties.okahu_creds.env_dict])
 
-def setOpenaiEnvironmentVariablesFromConfig(configFilePath):
+def setAzureOpenaiEnvironmentVariablesFromConfig(configFilePath):
     setCredEnvironmentVariablesFromConfig(configFilePath,
-        [credential_utilties.openai_creds.env_dict, 
+        [credential_utilties.azure_openai_creds.env_dict, 
          credential_utilties.okahu_creds.env_dict])
+
+def setOkahuEnvironmentVariablesFromConfig(configFilePath):
+    setCredEnvironmentVariablesFromConfig(configFilePath,
+         [credential_utilties.okahu_creds.env_dict])
 
 def setCredEnvironmentVariablesFromConfig(configFilePath, jsonDicts):
     config = configparser.ConfigParser()

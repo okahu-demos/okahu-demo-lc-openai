@@ -1,55 +1,92 @@
-import os
+import os, sys
+from typing import Any, Dict, List, Optional, Union
 import chromadb
 from llama_index.vector_stores.chroma import ChromaVectorStore
-from llama_index.llms.openai import OpenAI
+#from llama_index.llms.openai import OpenAI
+from llama_index.core import Settings
 from llama_index.core import StorageContext
 from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
 from llama_index.core import StorageContext
 from llama_index.llms.azure_openai import AzureOpenAI
 from llama_index.embeddings.azure_openai import AzureOpenAIEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
+from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from credential_utilties.environment import setDataEnvironmentVariablesFromConfig, setAzureOpenaiEnvironmentVariablesFromConfig
+from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 from okahu_apptrace.instrumentor import setup_okahu_telemetry
 from okahu_apptrace.wrap_common import llm_wrapper
 from okahu_apptrace.wrapper import WrapperMethod
-from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
+from okahu_apptrace.instrumentor import setup_okahu_telemetry
+#from credential_utilties.environment import setOkahuEnvironmentVariablesFromConfig
 
 
-setup_okahu_telemetry(
-    workflow_name="llama_index_1",
-    span_processors=[BatchSpanProcessor(ConsoleSpanExporter())],
-    wrapper_methods=[
+def init(config_path:str):
+    setDataEnvironmentVariablesFromConfig(config_path)
+    setAzureOpenaiEnvironmentVariablesFromConfig(config_path)
+    setup_okahu_telemetry(
+    workflow_name="azure_openai_llama_index_1"
+    ,span_processors=[BatchSpanProcessor(ConsoleSpanExporter())]
+    ,wrapper_methods=[
         WrapperMethod(
             package="llama_index.llms.openai.base",
             object="OpenAI",
-            method="chat",
-            span_name="llamaindex.openai",
-            wrapper=llm_wrapper),
-        ]
-)
+            span_name="llamaindex.azure_openai",
+            wrapper=llm_wrapper, 
+            method="chat"),
+        ]    )
 
-# Creating a Chroma client
-# EphemeralClient operates purely in-memory, PersistentClient will also save to disk
-chroma_client = chromadb.EphemeralClient()
-chroma_collection = chroma_client.create_collection("quickstart")
+    Settings.embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
 
-# construct vector store
-vector_store = ChromaVectorStore(
-    chroma_collection=chroma_collection,
-)
-dir_path = os.path.dirname(os.path.realpath(__file__))
-documents = SimpleDirectoryReader(dir_path + "/data").load_data()
+def setup_embedding(chroma_vector_store: ChromaVectorStore, embed_model):
+    # Creating a Chroma client
+    documents = SimpleDirectoryReader(input_files=
+                             [os.environ["AZUREML_MODEL_DIR"] + "/coffee_llama_embedding/coffee.txt"]).load_data()
 
-embed_model = OpenAIEmbedding(model="text-embedding-3-large")
-storage_context = StorageContext.from_defaults(vector_store=vector_store)
-index = VectorStoreIndex.from_documents(
-    documents, storage_context=storage_context, embed_model=embed_model
-)
+    storage_context = StorageContext.from_defaults(vector_store=chroma_vector_store)
+    index = VectorStoreIndex.from_documents(
+        documents, storage_context=storage_context, embed_model=embed_model
+    )
+    index.storage_context.persist(persist_dir=os.environ["AZUREML_MODEL_DIR"])
 
-az_llm = AzureOpenAI(deployment_id="kshitiz-gpt",api_key=os.environ.get("AZURE_OPENAI_API_KEY"), api_version="2024-02-01", azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"))
-llm = OpenAI(temperature=0.1, model="gpt-4")
+def get_vector_index() -> VectorStoreIndex:
+    chroma_client = chromadb.PersistentClient(path=os.environ["AZUREML_MODEL_DIR"] + "/coffee_llama_embedding")
+    create_embedding = False
+    embed_model = HuggingFaceEmbedding(model_name="BAAI/bge-small-en-v1.5")
+    try:
+        chroma_collection = chroma_client.get_collection("quickstart")
+    except ValueError:
+        chroma_collection = chroma_client.create_collection("quickstart")
+        create_embedding = True
+    # construct vector store
+    chroma_vector_store = ChromaVectorStore(
+        chroma_collection=chroma_collection,
+    )
+    if create_embedding == True:
+        setup_embedding(chroma_vector_store, embed_model)
+    return VectorStoreIndex.from_vector_store(vector_store=chroma_vector_store, embed_model=embed_model)
 
-query_engine = index.as_query_engine(llm= llm, )
-response = query_engine.query("What did the author do growing up?")
+def run():
+    az_llm = AzureOpenAI(deployment_id=os.environ.get("AZURE_OPENAI_API_DEPLOYMENT"),
+                     api_key=os.environ.get("AZURE_OPENAI_API_KEY"), 
+                     api_version=os.environ.get("AZURE_OPENAI_API_VERSION"), 
+                     azure_endpoint=os.environ.get("AZURE_OPENAI_ENDPOINT"))
+    index = get_vector_index()
+    query_engine = index.as_query_engine(llm=az_llm)
 
-print(response)
+    while True:
+        prompt = input("\nAsk a coffee question [Press return to exit]: ")
+        if prompt == "":
+            break
+        response = query_engine.query(prompt)
+        print(response)
+
+def main():
+    init(sys.argv[1])
+    run()
+
+if __name__ == "__main__":
+    if len(sys.argv) == 1:
+        print("Usage " + sys.argv[0] + " <config-file-path>")
+        sys.exit(1)
+    main()
 
