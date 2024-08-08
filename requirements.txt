@@ -9,5 +9,7 @@ llama-index-llms-azure-openai
 llama-index-embeddings-azure-openai
 huggingface-hub<0.23.0
 sentence-transformers
-okahu-observability
+pysqlite3-binary
+chromadb
+monocle_apptrace
 credential_utilties/
