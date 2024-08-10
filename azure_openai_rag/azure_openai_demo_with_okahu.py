@@ -1,4 +1,5 @@
 import sys
+import logging
 import auzure_openai_llm_demo
 from opentelemetry.sdk.trace.export import BatchSpanProcessor, ConsoleSpanExporter
 from okahu_apptrace.instrumentor import setup_okahu_telemetry
@@ -12,6 +13,8 @@ def main():
     setOkahuEnvironmentVariablesFromConfig(sys.argv[1])
     setup_okahu_telemetry(workflow_name="azure_openai_llama_index_2")
 
+    logger = logging.getLogger()
+    logger.setLevel(logging.ERROR)
     #invoke the underlying application
     auzure_openai_llm_demo.main()
 
