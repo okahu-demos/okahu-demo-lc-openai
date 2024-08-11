@@ -1,3 +1,4 @@
+--extra-index-url https://okahu.jfrog.io/artifactory/api/pypi/okahu-pypi/simple
 pysqlite3-binary
 chromadb
 huggingface-hub==0.22.2
@@ -11,5 +12,5 @@ huggingface-hub<0.23.0
 sentence-transformers
 pysqlite3-binary
 chromadb
-monocle_apptrace
+okahu-observability
 credential_utilties/
