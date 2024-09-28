@@ -13,7 +13,6 @@ from langchain_community.document_loaders import DirectoryLoader
 
 # Create vectore store and load data 
 def setup_embedding(embedding_model):
-    print ("Setting up vector store")
     documents = DirectoryLoader("data/", glob="*.txt").load()
     vector_store = Chroma.from_documents(documents, embedding_model,
         persist_directory="data/vector_store")
