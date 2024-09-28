@@ -6,9 +6,6 @@ langchain-openai
 langchain-community
 langchainhub
 langchain-chroma
-huggingface-hub==0.22.2
-transformers<4.41.0
-sentence-transformers
 pysqlite3-binary
 unstructured
 okahu-observability
