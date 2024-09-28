@@ -13,8 +13,8 @@ You'll need
 - An Okahu tenant and API key to [Okahu AI Observability Cloud](https://www.okahu.ai)  
 
 ## Configure the demo environment
-- Copy the file config/config.ini.template to config/config.ini
-- Edit the config/config.ini file to add the OpenAI API Key and Okahu API key and save
+- Copy the file botenv.sh.template to botenv.sh
+- Edit the botenv.sh file to add the OpenAI API Key and Okahu API key and save
 
 ## Run the interactive chatbot 
 This application is an interactive chatbot that answers questions about coffee and built with a RAG design pattern.
@@ -26,7 +26,7 @@ To try Okahu from the Github Codespace
 
 1. Run the pre-instrumented chatbot app with following command from top level directory
 
-   ```./coffee_client_openai_with_okahu.sh```
+   ```python lc-openai-with-okahu.py```
    
 2. View the workflow discovered by Okahu AI Observability Cloud with following commands with your Okahu API key
     - Discover all components
@@ -42,6 +42,6 @@ To do
 
 ### Okahu instrumentation
 
-To run the chatbot app without Okahu instrumentation, use the command ```./coffee_client_openai.sh```
+To run the chatbot app without Okahu instrumentation, use the command ```python lc-openai.py```
 
-To understand how Okahu instrumentation works, compare the [coffee_rag_openai.py](rag_openai_service/coffee_rag_openai.py) and [coffee_rag_openai_with_okahu.py](rag_openai_service/coffee_rag_openaiwith_okahu.py)
+To understand how Okahu instrumentation works, compare the [lc-openai.py](lc-openai.py) and [lc-openai-with-okahu.py](lc-openai-with-okahu.py)
