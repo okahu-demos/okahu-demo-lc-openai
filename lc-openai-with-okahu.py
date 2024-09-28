@@ -10,6 +10,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from langchain_core.runnables import RunnablePassthrough
 from langchain_community.document_loaders import DirectoryLoader
+from okahu_apptrace.instrumentor import setup_okahu_telemetry
 
 # Create vectore store and load data 
 def setup_embedding(embedding_model):
@@ -51,7 +52,9 @@ def run(vector_store):
         print(response)
 
 def main():
+
     vector_store = get_vector_store()
+    setup_okahu_telemetry(workflow_name = "demo-chat-lc-openai")
     run(vector_store)
 
 if __name__ == "__main__":
