@@ -1,17 +1,14 @@
 --extra-index-url https://okahu.jfrog.io/artifactory/api/pypi/okahu-pypi/simple
 pysqlite3-binary
 chromadb
+langchain
+langchain-openai
+langchain-community
+langchainhub
+langchain-chroma
 huggingface-hub==0.22.2
-llama_index
-llama-index-vector-stores-chroma
 transformers<4.41.0
-llama-index-embeddings-huggingface
-llama-index-llms-azure-openai
-llama-index-embeddings-azure-openai
-huggingface-hub<0.23.0
 sentence-transformers
 pysqlite3-binary
-chromadb
+unstructured
 okahu-observability
-credential_utilties/
-monocle_apptrace

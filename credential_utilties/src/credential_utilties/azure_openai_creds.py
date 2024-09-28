@@ -1,6 +1,0 @@
-env_dict = {
-    "AZURE_OPENAI_API_KEY": "",
-    "AZURE_OPENAI_ENDPOINT": "",
-    "AZURE_OPENAI_API_VERSION" : "2024-02-01",
-    "AZURE_OPENAI_API_DEPLOYMENT" : ""
-}
