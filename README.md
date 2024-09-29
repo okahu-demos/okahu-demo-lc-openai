@@ -19,7 +19,7 @@ You'll need
 ## Run the interactive chatbot 
 This application is an interactive chatbot that answers questions about coffee and built with a RAG design pattern.
 Workflow is a python program using Langchain LLM orchestration framework. 
-The vector dataset is built using multi-qa-mpnet-base-dot-v1 embedding model from Huggingface from a set of Wikipedia articles. The vector data is stored in a local filebased faiss vectorDB. 
+The vector dataset is built using text-embedding-3-large embedding model from OpenAI from a [local dataset about coffee](data/coffee.txt). The vector data is stored in a local filebased Chroma vectorDB. 
 The app uses OpenAI gpt-3.5-turbo model for inference.
 
 To try Okahu from the Github Codespace 
