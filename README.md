@@ -38,7 +38,12 @@ To try Okahu from the Github Codespace
 
 ### Example output 
 
-To do 
+```
+$ python lmx-az_openai-with-okahu.py 
+
+Ask a coffee question [Press return to exit]: What is an americano?
+An americano is a type of coffee drink that is made by diluting an espresso shot with hot water at a 1:3 to 1:4 ratio, resulting in a drink that retains the complex flavors of espresso, but in a lighter way.
+```
 
 ### Okahu instrumentation
 
