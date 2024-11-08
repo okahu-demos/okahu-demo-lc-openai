@@ -8,4 +8,4 @@ langchainhub
 langchain-chroma
 pysqlite3-binary
 unstructured
-okahu-observability
+okahu-observability>=0.3.0
