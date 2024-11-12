@@ -19,7 +19,7 @@ def setup_embedding(embedding_model):
     return vector_store
 
 def get_vector_store() :
-    embedding_model = OpenAIEmbeddings(model="text-embedding-3-large")
+    embedding_model = OpenAIEmbeddings(model="text-embedding-3-small")
     vector_store = Chroma(persist_directory="data/vector_store",
             embedding_function=embedding_model)
     if len(vector_store.get()["ids"]) == 0:
@@ -29,7 +29,7 @@ def get_vector_store() :
 def run(vector_store):
     retriever = vector_store.as_retriever()
     
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+    llm = ChatOpenAI(model_name="gpt-4o-mini", temperature=0)
     def format_docs(docs):
         return "\n\n ".join(doc.page_content for doc in docs)
 

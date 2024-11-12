@@ -6,4 +6,4 @@ langchain-community
 langchainhub
 langchain-chroma
 unstructured
-okahu-observability
+okahu-observability>=0.3.0
