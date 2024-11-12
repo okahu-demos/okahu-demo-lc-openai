@@ -1,11 +1,9 @@
 --extra-index-url https://okahu.jfrog.io/artifactory/api/pypi/okahu-pypi/simple
-pysqlite3-binary
 chromadb
 langchain
 langchain-openai
 langchain-community
 langchainhub
 langchain-chroma
-pysqlite3-binary
 unstructured
 okahu-observability
