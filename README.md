@@ -7,6 +7,11 @@ You can fork this repo and run the app in Github Codespaces to get started quick
 
 To try this chatbot 
 - Fork this repo and run in the Github Codespace 
+- To run this on Mac 
+  - Install python dependencies: ```pip install -r requirement.txt```
+  - Remove libmagic: ```pip uninstall python-magic```
+- To run this on Windows
+  - Install python dependencies: ```pip install -r requirement.txt```
 
 You'll need 
 - An OpenAI subscription and an API key to [OpenAI developer platform](https://platform.openai.com/overview)
