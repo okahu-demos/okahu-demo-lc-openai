@@ -1,4 +1,5 @@
 --extra-index-url https://okahu.jfrog.io/artifactory/api/pypi/okahu-pypi/simple
+pysqlite3-binary; platform_system=="Linux"
 chromadb
 langchain
 langchain-openai
